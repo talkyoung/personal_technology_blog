@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talkyoung.simpro.dao.UserPermissionDao">
+    <resultMap id="BaseResultMap" type="com.talkyoung.simpojo.entity.UserPermission">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="pid" jdbcType="BIGINT" property="pid" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="value" jdbcType="VARCHAR" property="value" />
+        <result column="icon" jdbcType="VARCHAR" property="icon" />
+        <result column="type" jdbcType="INTEGER" property="type" />
+        <result column="path" jdbcType="VARCHAR" property="path" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="sort" jdbcType="INTEGER" property="sort" />
+        <result column="component" jdbcType="VARCHAR" property="component" />
+        <result column="hidden" jdbcType="INTEGER" property="hidden" />
+        <result column="redirect" jdbcType="VARCHAR" property="redirect" />
+        <result column="name_en" jdbcType="VARCHAR" property="nameEn" />
+    </resultMap>
+    <select id="getUserRolePermissionByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT sup.* FROM sp_user_permission sup JOIN sp_user_role_permission_relation surpr
+    WHERE sup.`id` = surpr.`permission_id` AND role_id IN
+    (SELECT surr.role_id FROM sp_user_role_relation surr WHERE surr.`user_id` = #{id,jdbcType=INTEGER})
+	AND sup.`status` = 1 AND sup.`type` != 2 ORDER BY sup.`sort`
+  </select>
+</mapper>
